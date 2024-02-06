@@ -1,4 +1,6 @@
 # Potato Diseases Classification Project
+AWS CI/CD - End-to-End Deep Learning Project
+
 ## Code and Resources Used 
 **Python Version:** 3.8  
 **Packages:** numpy, pandas, matplotlib, tensorflow, flask, dvc   
