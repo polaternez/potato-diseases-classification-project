@@ -1,0 +1,117 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/potatodisease/pipeline/stage01_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a078b65b07edc66a2a34078e083be660
+      size: 798
+    - path: src/potatodisease/pipeline/stage01_data_ingestion.py
+      hash: md5
+      md5: cad9e7e08bd0822c7aafdba4dbe1e0f1
+      size: 918
+    outs:
+    - path: artifacts/data_ingestion/potato-diseases-images
+      hash: md5
+      md5: 6b4db292639de8cd02208ba7c8291606.dir
+      size: 14273012
+      nfiles: 451
+  prepare_base_model:
+    cmd: python src/potatodisease/pipeline/stage02_prepare_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a078b65b07edc66a2a34078e083be660
+      size: 798
+    - path: src/potatodisease/pipeline/stage02_prepare_base_model.py
+      hash: md5
+      md5: 76d4ca7eacfb947b14505452cbc6def9
+      size: 993
+    params:
+      params.yaml:
+        CLASSES: 7
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.001
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: af8bcb2b9543adc6205790d7ba5f7896.dir
+      size: 118561008
+      nfiles: 2
+  training:
+    cmd: python src/potatodisease/pipeline/stage03_training.py
+    deps:
+    - path: artifacts/data_ingestion/potato-diseases-images
+      hash: md5
+      md5: 6b4db292639de8cd02208ba7c8291606.dir
+      size: 14273012
+      nfiles: 451
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: af8bcb2b9543adc6205790d7ba5f7896.dir
+      size: 118561008
+      nfiles: 2
+    - path: config/config.yaml
+      hash: md5
+      md5: a078b65b07edc66a2a34078e083be660
+      size: 798
+    - path: src/potatodisease/components/prepare_callbacks.py
+      hash: md5
+      md5: 384993427feb49fa28aaf92c7586dfca
+      size: 941
+    - path: src/potatodisease/pipeline/stage03_training.py
+      hash: md5
+      md5: 8d4a1a364863c8392d1e4c233a0bd43c
+      size: 1261
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 16
+        EPOCHS: 1
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: artifacts/training/model.h5
+      hash: md5
+      md5: f6873c020237e27296ccd0aa7e6337db
+      size: 61049304
+  evaluation:
+    cmd: python src/potatodisease/pipeline/stage04_evaluation.py
+    deps:
+    - path: artifacts/data_ingestion/potato-diseases-images
+      hash: md5
+      md5: 6b4db292639de8cd02208ba7c8291606.dir
+      size: 14273012
+      nfiles: 451
+    - path: artifacts/training/model.h5
+      hash: md5
+      md5: f6873c020237e27296ccd0aa7e6337db
+      size: 61049304
+    - path: config/config.yaml
+      hash: md5
+      md5: a078b65b07edc66a2a34078e083be660
+      size: 798
+    - path: src/potatodisease/pipeline/stage04_evaluation.py
+      hash: md5
+      md5: 33df8becbf77d2fd111799f95b8ff6e0
+      size: 877
+    params:
+      params.yaml:
+        BATCH_SIZE: 16
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: scores.json
+      hash: md5
+      md5: 24cf08693fed5bef8783d4cc2b51292e
+      size: 73
