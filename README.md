@@ -8,3 +8,8 @@ AWS CI/CD - End-to-End Deep Learning Project
 **Create Anaconda environment:** 
 - ```conda create -p venv python==3.8 -y```  
 - ```pip install -r requirements.txt```
+
+## Data Version Control(DVC) commands
+- **dvc init** -> Initialize DVC
+- **dvc repro** -> Reproduce the pipeline definition in "dvc.yml"
+- **dvc dag** -> Visualize pipeline structure
