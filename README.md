@@ -1,5 +1,5 @@
 # Potato Diseases Classification Project
-AWS CI/CD - End-to-End Deep Learning Project
+AWS CI/CD - End-to-End Deep Learning Project with DVC
 
 ## Code and Resources Used 
 **Python Version:** 3.8  
